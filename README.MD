@@ -1,6 +1,6 @@
 This article documents my attempt at this [issue or task](https://forge.fedoraproject.org/commops/interns/issues/122).
 
-The issue description divides the task into **5** steps:
+The issue discription divides the task into **5** steps:
 
 1. Install docling with your python package manager
 2. Display the version of docling installed
@@ -10,7 +10,7 @@ The issue description divides the task into **5** steps:
 6. Try a couple of other command line options to compare results 
 
 ##  My OS information:
-![alt text](terminal-screenshots/os_info.png)
+![alt text](image-2.png)
 
 ## Step 1: Installation & Verification
 
@@ -22,10 +22,10 @@ Python 3.14.3
 pip 25.1.1 from /usr/lib/python3.14/site-packages/pip (python 3.14)
 ```
 
-![alt text](terminal-screenshots/upgpipandmakeavenv.png)
+![alt text](screenshots/upgpipandmakeavenv.png)
 
 
-I then created a virtual environment to keep the project isolated and activated the venv:
+I then created a virtual envirnoment to keep the project isolated and activated the venv:
 
 ```bash
 shadyhany@fedora:~/Public/docling$ python3 -m venv docling-env
@@ -35,16 +35,16 @@ shadyhany@fedora:~/Public/docling$ source docling-env/bin/activate
 
 I then installed docling using pip:
 
-![/terminal-screenshots/install_docling_1.png](terminal-screenshots/install_docling_1.png)
+![/screenshots/install_docling_1.png](screenshots/install_docling_1.png)
 
-![/terminal-screenshots/install_docling_2.png](terminal-screenshots/install_docling_2.png)
+![/screenshots/install_docling_2.png](screenshots/install_docling_2.png)
 
 
 I also ran docling help to have a short tutorial and see how it works:
-![alt text](terminal-screenshots/docling_help.png)
+![alt text](screenshots/docling_help.png)
 
 ## Step 2: Version Information
-![alt text](terminal-screenshots/docling_version.png)
+![alt text](screenshots/docling_version.png)
 
 
 ## Step 3: **Default** Markdown Conversion
@@ -56,22 +56,22 @@ docling sponsor_pytconf26_eu_030526.pdf
 ```
 
 ### output:
-![Terminal Screenshot](terminal-screenshots/doclingDefault.png)
+![Terminal Screenshot](screenshots/doclingDefault.png)
 
 [The Output defaults to this .md file](sponsor_pytconf26_eu_030526.md)
 
-- Overall, Docling handled the conversion smoothly. The resulting `.md` file preserved the document's structure, including sections and tables. Key information such as event dates, sponsorship tiers, and contact details were accurately extracted. 
-- The conversion took about 2 minutes.
-- It missed some subtle alignment issues within the document, such as failing to allocate icon images to relevant text:
 
-**Output:**
+- Overall Docling handled the convesion smoothly. The resulting `.md` file preserved the document's structure, including sections, and tables. Key information such as event dates, sponsorship tiers, and contact details were accurately extracted. 
+- The conversion took about 2 miniutes.
 
-### **output `.md` file**:
-![alt text](document_imgs/md_output.png)
+- it missed on some subtle alignment issues within the document like failing to allocate icon images to relevent text:
 
 
-### **Source `.pdf` file**:
-![alt text](document_imgs/image-1.png)
+output :
+![alt text](<Screenshot From 2026-03-31 21-22-06.png>)
+
+Source .pdf file:
+![alt text](image-1.png)
 
 
 ## Step 4: HTML Conversion
@@ -85,87 +85,59 @@ docling sponsor_pytconf26_eu_030526.pdf --to html
 - **File Size:** 1.2M
 - **Lines of Code:** 277
 - **Processing Time:** ~3 minutes (cached models)
-- **Terminal Output:**
-![alt text](terminal-screenshots/htmlOutputVersion.png)
+- **terminal output:**
+![alt text](screenshots/htmlOutputVersion.png)
 
 - **[output file](sponsor_pytconf26_eu_030526.html)**
 
 ### Key Observations
 ✅ **Successful Conversion**
-- The `html` format appears the same as the `.md` one, with the same text-vs-icons alignment issues.
+- The `html` format appears the same as the `.md` one, without any diffrences thes same text VS icons aligment erros.
 
 ---
 
 # Step 5: Alternative Options Tested
 
-## 1. JSON Format Conversion
+1. I tried the json format:
 
-I tested the JSON format as a "lossless" representation, as it extracts metadata and structural relationships between document objects. The JSON format provides a geometric view of the document blocks. This format has high RAG support because JSON preserves the spatial information of the document, unlike simpler text formats like Markdown and HTML.
+Finally, I tested the .json format as a "lossless" representation, as it extracts alot of metadata, and structural relationship between document's objects. The json format gives a geometric view of the blocks of the document. This format has high RAG support, as json preserves the spatial information of the document unlike simpler text formats like .md and HTML.
+
 
 ```bash
 docling sponsor_pytconf26_eu_030526.pdf --to json
 ```
 
-- **Output File:** [`sponsor_pytconf26_eu_030526.json`](sponsor_pytconf26_eu_030526.json)
-- **Terminal Output:**
-![alt text](terminal-screenshots/jsonfromatCommand.png)
+- **Output file:** [`sponsor_pytconf26_eu_030526.json`](sponsor_pytconf26_eu_030526.json)
+- **Terminal Output**:
+![alt text](screenshots/jsonfromatCommand.png)
 
-## 2. Accurate Table Mode (--table-mode accurate)
+2. I tried another command option using `accurate` `--table-mode` flag:
 
 ### Command
 
 ```bash
 docling sponsor_pytconf26_eu_030526.pdf --table-mode accurate
 ```
-
 ### Terminal Output:
-![alt text](terminal-screenshots/tableocraccurateCommand.png)
+![alt text](screenshots/tableocraccurateCommand.png)
 
-### Key Finding:
-The output yielded an identical `.md` file because the default Docling pipeline already uses `--table-mode accurate` as the default setting.
+The output result yielded an Identical .md file because the default Docling pipeline already uses `--table-mode accurate` as the default setting.
 
-## 3. Layout Analysis with Debug Visualization
+3. I tried another command options:
 
 ### Command:
 
 ```bash
 docling sponsor_pytconf26_eu_030526.pdf --to md --ocr --debug-visualize-layout --output ./docling_layout_analysis_report
 ```
-
 ### Output:
 
-- **Terminal Output:**
-![alt text](terminal-screenshots/debugvismdCommand.png)
+- Terminal outpout:
+![alt text](screenshots/debugvismdCommand.png)
 
 - The `.md` output file is identical to those generated by the default and `accurate` flags.
 
-- It also generated a collection of images showing exactly how Docling "saw" the document. These visualizations show side-by-side comparisons of the original PDF page and Docling's interpretation, with boxes drawn around detected text and images. These visualization files were placed in the [`debug`](debug_output_images) folder. On page 2, the debug visualization was able to detect and box the "**PyTorch Conference 2024**" sign:
-  ![alt text](debug_output_images/debug_sponsor_pytconf26_eu_030526/postprocessed_layout_page_00002.png)
+- It also generated a collection of images that shows exactly how the AI "saw" the document showing side-by-side two version of the page in the pdf and how docling saw it by drawing boxes around text images the images were put in the folder [`debug`](debug). In page 2 the debug option was able to draw a box around the "**PyTorch Conference 2024" sign.**":
+  ![alt text](debug/debug_sponsor_pytconf26_eu_030526/postprocessed_layout_page_00002.png)
 
-- Processing time: approximately 2 minutes (due to cached models)
-
----
-
-## Project Files & Directories
-
-This repository contains the following files and directories:
-
-### Source Document
-- **`sponsor_pytconf26_eu_030526.pdf`** - The original 7-page PyCon EU 2026 sponsorship prospectus used as the source document for all conversion tests.
-
-### Conversion Outputs
-- **`sponsor_pytconf26_eu_030526.md`** - Default markdown conversion output with full document structure and content.
-- **`sponsor_pytconf26_eu_030526.html`** - HTML conversion output with embedded CSS styling for web viewing.
-- **`sponsor_pytconf26_eu_030526.json`** - JSON structured output containing metadata, spatial relationships, and complete document hierarchy for programmatic processing.
-
-### Test Outputs & Comparisons
-- **`accurate/`** - Folder containing markdown output generated with explicit `--table-mode accurate` flag (produces identical results to default).
-- **`docling_layout_analysis_report/`** - Output folder from the layout analysis command using OCR and debug visualization options.
-
-### Visualizations & Screenshots
-- **`debug_output_images/`** - Collection of layout analysis visualization images showing Docling's interpretation of document structure with bounding boxes around detected elements.
-- **`terminal-screenshots/`** - Screenshots of terminal commands and output from each conversion step.
-- **`document_imgs/`** - Additional images referenced in the documentation for comparison and analysis.
-
-### Documentation
-- **`README.MD`** - Complete guide documenting all steps, commands, outputs, and analysis of the Docling conversion testing.
+- it took around 2 minutes (because of cashed models)
